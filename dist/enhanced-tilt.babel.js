@@ -154,6 +154,7 @@ var EnhancedTilt = function () {
 
 
   EnhancedTilt.prototype.onTouchStart = function onTouchStart(event) {
+
     this.touching = true;
     this.updateElementPosition();
     this.element.style.willChange = 'transform';
@@ -174,6 +175,7 @@ var EnhancedTilt = function () {
   };
 
   EnhancedTilt.prototype.onTouchEnd = function onTouchEnd(event) {
+
     this.touching = false;
     this.setTransition();
     if (this.settings.reset) {

@@ -77,7 +77,6 @@ export default class EnhancedTilt {
     this.element.addEventListener('touchstart', this.onTouchStartBind);
     this.element.addEventListener('touchmove', this.onTouchMoveBind);
     this.element.addEventListener('touchend', this.onTouchEndBind);
-    
 
     if (this.glare) {
       window.addEventListener('resize', this.onWindowResizeBind);
@@ -140,7 +139,8 @@ export default class EnhancedTilt {
   }
 
   // touch events
-  onTouchStart(event) {    
+  onTouchStart(event) {
+
     this.touching = true;
     this.updateElementPosition();
     this.element.style.willChange = 'transform';
@@ -153,14 +153,15 @@ export default class EnhancedTilt {
 
     if (this.updateCall !== null) {
       cancelAnimationFrame(this.updateCall);
-    }    
+    }
     this.event.clientX = event.targetTouches[0].screenX;
     this.event.clientY = event.targetTouches[0].screenY;
 
     this.updateCall = requestAnimationFrame(this.updateBind);
   }
 
-  onTouchEnd(event) {    
+  onTouchEnd(event) {
+
     this.touching = false;
     this.setTransition();
     if (this.settings.reset) {
@@ -204,7 +205,7 @@ export default class EnhancedTilt {
     let tiltX = (this.reverse * (this.settings.max / 2 - x * this.settings.max)).toFixed(2);
     let tiltY = (this.reverse * (y * this.settings.max - this.settings.max / 2)).toFixed(2);
     let angle = Math.atan2(this.event.clientX - (this.left + this.width / 2), -(this.event.clientY - (this.top + this.height / 2))) * (180 / Math.PI);
-    
+
     return {
       tiltX: tiltX,
       tiltY: tiltY,
