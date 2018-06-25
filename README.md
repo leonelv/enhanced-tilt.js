@@ -78,7 +78,7 @@ element.enhancedTilt.reset();
 ------
 
 - It's always listening for movement and can cause some performance issues, also tilts the elements that aren't visible on the viewport (Fix in progress).
-- Sometimes doesn't response to touch events.
+- ~~Sometimes doesn't respond to touch events.~~
 
 ### Credits
 

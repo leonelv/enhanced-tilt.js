@@ -1,6 +1,6 @@
 # enhanced-tilt.js
 
-A smooth 3D tilt javascript library forked from [vanilla-tilt.js](https://github.com/micku7zu/vanilla-tilt.js/)
+A smooth 3D tilt JavaScript library forked from [vanilla-tilt.js](https://github.com/micku7zu/vanilla-tilt.js/)
 
 ### Main Features
 
@@ -78,6 +78,7 @@ element.enhancedTilt.reset();
 ------
 
 - It's always listening for movement and can cause some performance issues, also tilts the elements that aren't visible on the viewport (Fix in progress).
+- ~~Sometimes doesn't respond to touch events.~~
 
 ### Credits
 

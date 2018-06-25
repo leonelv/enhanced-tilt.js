@@ -1,6 +1,6 @@
 {
   "name": "enhanced-tilt",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A smooth 3D tilt javascript library forked from Vanilla-tilt.js",
   "main": "lib/enhanced-tilt.js",
   "module_es2015": "lib/enhanced-tilt.es2015.js",

@@ -45,6 +45,12 @@ var EnhancedTilt = function () {
     this.transitionTimeout = null;
     this.updateCall = null;
     this.touching = false;
+    this.prevState = {
+      gamma: 0,
+      beta: 0
+    };
+    this.gamma = 0;
+    this.beta = 0;
 
     this.updateBind = this.update.bind(this);
     this.resetBind = this.reset.bind(this);
@@ -135,11 +141,12 @@ var EnhancedTilt = function () {
   };
 
   EnhancedTilt.prototype.onMouseMove = function onMouseMove(event) {
-    /*see here*/
     if (this.updateCall !== null) {
       cancelAnimationFrame(this.updateCall);
     }
     this.event = event;
+    this.x = event.clientX;
+    this.y = event.clientY;
     this.updateCall = requestAnimationFrame(this.updateBind);
   };
 
@@ -154,7 +161,6 @@ var EnhancedTilt = function () {
 
 
   EnhancedTilt.prototype.onTouchStart = function onTouchStart(event) {
-
     this.touching = true;
     this.updateElementPosition();
     this.element.style.willChange = 'transform';
@@ -162,20 +168,18 @@ var EnhancedTilt = function () {
   };
 
   EnhancedTilt.prototype.onTouchMove = function onTouchMove(event) {
-    /*see here*/
     this.touching = true;
-
     if (this.updateCall !== null) {
       cancelAnimationFrame(this.updateCall);
     }
-    this.event.clientX = event.targetTouches[0].screenX;
-    this.event.clientY = event.targetTouches[0].screenY;
+    this.event = event;
+    this.x = event.targetTouches[0].screenX;
+    this.y = event.targetTouches[0].screenY;
 
     this.updateCall = requestAnimationFrame(this.updateBind);
   };
 
   EnhancedTilt.prototype.onTouchEnd = function onTouchEnd(event) {
-
     this.touching = false;
     this.setTransition();
     if (this.settings.reset) {
@@ -186,18 +190,42 @@ var EnhancedTilt = function () {
 
 
   EnhancedTilt.prototype.onDeviceMove = function onDeviceMove(event) {
-    /*see here*/
     if (this.updateCall !== null) {
       cancelAnimationFrame(this.updateCall);
     }
-    if (!this.touching) {
-      this.event = event;
-      this.updateCall = requestAnimationFrame(this.updateBind);
+
+    this.prevState.gamma = this.gamma;
+    this.prevState.beta = this.beta;
+    this.gamma = event.gamma;
+    this.beta = event.beta;
+    var gammaDiff = Math.abs(this.prevState.gamma - this.gamma);
+    var betaDiff = Math.abs(this.prevState.beta - this.beta);
+
+    console.log(gammaDiff + '\n' + betaDiff);
+
+    if (gammaDiff > 0 || betaDiff > 0) {
+      this.updateElementPosition();
+      this.element.style.willChange = 'transform';
+      this.setTransition();
     }
+
+    if (!this.touching && (gammaDiff > .2 || betaDiff > .2)) {
+      this.event = event;
+      this.x = map(this.gamma = this.gamma < -90 ? 90 : this.gamma, -90, 90, 0, this.width) + this.left;
+      this.y = map(this.beta = this.beta < -90 ? 90 : this.beta, -90, 90, 0, this.height) + this.top;
+      this.updateCall = requestAnimationFrame(this.updateBind);
+      console.log(this.x + '\n' + this.y);
+    }
+
+    //if ((gammaDiff < 1 || betaDiff < 1)) {
+    //  this.setTransition();
+    //  if (this.settings.reset) {
+    //    requestAnimationFrame(this.resetBind);
+    //  }
+    //}
   };
 
   EnhancedTilt.prototype.reset = function reset() {
-    /*see here*/
     this.event = {
       pageX: this.left + this.width / 2,
       pageY: this.top + this.height / 2
@@ -212,15 +240,23 @@ var EnhancedTilt = function () {
   };
 
   EnhancedTilt.prototype.getValues = function getValues() {
-    var x = (this.event.clientX - this.left) / this.width;
-    var y = (this.event.clientY - this.top) / this.height;
-    var gamma = this.event.gamma;
-    var beta = this.event.beta;
-    x = gamma ? map(gamma = gamma < -90 ? 90 : gamma, -90, 90, -0.2, 1.2) : Math.min(Math.max(x, 0), 1);
-    y = beta ? map(beta = beta < -90 ? 90 : beta, -90, 90, -0.2, 1.2) : Math.min(Math.max(y, 0), 1);
+    //let x = (this.x - this.left) / this.width;
+    //let y = (this.y - this.top) / this.height;
+    //let gamma = this.event.gamma;
+    //let beta = this.event.beta;
+    //x = gamma ? map((gamma = gamma < -90 ? 90 : gamma), -90, 90, -0.2, 1.2) : Math.min(Math.max(x, 0), 1);
+    //y = beta ? map((beta = beta < -90 ? 90 : beta), -90, 90, -0.2, 1.2) : Math.min(Math.max(y, 0), 1);
+    //let tiltX = (this.reverse * (this.settings.max / 2 - x * this.settings.max)).toFixed(2);
+    //let tiltY = (this.reverse * (y * this.settings.max - this.settings.max / 2)).toFixed(2);
+    //let angle = Math.atan2(this.event.x - (this.left + this.width / 2), -(this.event.y - (this.top + this.height / 2))) * (180 / Math.PI);
+
+    var x = (this.x - this.left) / this.width;
+    var y = (this.y - this.top) / this.height;
+    x = Math.min(Math.max(x, 0), 1);
+    y = Math.min(Math.max(y, 0), 1);
     var tiltX = (this.reverse * (this.settings.max / 2 - x * this.settings.max)).toFixed(2);
     var tiltY = (this.reverse * (y * this.settings.max - this.settings.max / 2)).toFixed(2);
-    var angle = Math.atan2(this.event.clientX - (this.left + this.width / 2), -(this.event.clientY - (this.top + this.height / 2))) * (180 / Math.PI);
+    var angle = Math.atan2(this.x - (this.left + this.width / 2), -(this.y - (this.top + this.height / 2))) * (180 / Math.PI);
 
     return {
       tiltX: tiltX,
