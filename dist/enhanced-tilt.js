@@ -13,9 +13,6 @@ var EnhancedTilt = (function () {
 
 /*
 TODO:
-  * change this.event for an object with x/y or replace with x/y
-  * add destroy method for device movement
-  * add touch events
   * fix performance issues (workarround: detect if the element it's on the viewport)
 */
 
@@ -161,6 +158,10 @@ class EnhancedTilt {
     if (this.updateCall !== null) {
       cancelAnimationFrame(this.updateCall);
     }
+    if (this.settings.scroll) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     this.event = event;
     this.x = event.targetTouches[0].screenX;
     this.y = event.targetTouches[0].screenY;
@@ -175,6 +176,7 @@ class EnhancedTilt {
       requestAnimationFrame(this.resetBind);
     }
   }
+
   // movement events
   onDeviceMove(event) {
     if (this.updateCall !== null) {
@@ -188,9 +190,6 @@ class EnhancedTilt {
     let gammaDiff = Math.abs(this.prevState.gamma - this.gamma);
     let betaDiff = Math.abs(this.prevState.beta - this.beta);
 
-    console.log(gammaDiff+'\n'+
-      betaDiff);
-    
     if ((gammaDiff > 0 || betaDiff > 0)) {
       this.updateElementPosition();
       this.element.style.willChange = 'transform';
@@ -202,8 +201,6 @@ class EnhancedTilt {
       this.x = map((this.gamma = this.gamma < -90 ? 90 : this.gamma), -90, 90, 0, this.width) + this.left;
       this.y = map((this.beta = this.beta < -90 ? 90 : this.beta), -90, 90, 0, this.height) + this.top;
       this.updateCall = requestAnimationFrame(this.updateBind);
-      console.log(this.x + '\n' + this.y);
-
     }
 
     //if ((gammaDiff < 1 || betaDiff < 1)) {
@@ -229,16 +226,6 @@ class EnhancedTilt {
   }
 
   getValues() {
-    //let x = (this.x - this.left) / this.width;
-    //let y = (this.y - this.top) / this.height;
-    //let gamma = this.event.gamma;
-    //let beta = this.event.beta;
-    //x = gamma ? map((gamma = gamma < -90 ? 90 : gamma), -90, 90, -0.2, 1.2) : Math.min(Math.max(x, 0), 1);
-    //y = beta ? map((beta = beta < -90 ? 90 : beta), -90, 90, -0.2, 1.2) : Math.min(Math.max(y, 0), 1);
-    //let tiltX = (this.reverse * (this.settings.max / 2 - x * this.settings.max)).toFixed(2);
-    //let tiltY = (this.reverse * (y * this.settings.max - this.settings.max / 2)).toFixed(2);
-    //let angle = Math.atan2(this.event.x - (this.left + this.width / 2), -(this.event.y - (this.top + this.height / 2))) * (180 / Math.PI);
-
     let x = (this.x - this.left) / this.width;
     let y = (this.y - this.top) / this.height;
     x = Math.min(Math.max(x, 0), 1);
@@ -370,7 +357,8 @@ class EnhancedTilt {
       glare: false,
       'max-glare': 1,
       'glare-prerender': false,
-      reset: true
+      reset: true,
+      scroll: true
     };
 
     let newSettings = {};

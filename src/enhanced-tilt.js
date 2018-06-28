@@ -155,6 +155,10 @@ export default class EnhancedTilt {
     if (this.updateCall !== null) {
       cancelAnimationFrame(this.updateCall);
     }
+    if (this.settings.scroll) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     this.event = event;
     this.x = event.targetTouches[0].screenX;
     this.y = event.targetTouches[0].screenY;
@@ -182,7 +186,7 @@ export default class EnhancedTilt {
     this.beta = event.beta;
     let gammaDiff = Math.abs(this.prevState.gamma - this.gamma);
     let betaDiff = Math.abs(this.prevState.beta - this.beta);
-    
+
     if ((gammaDiff > 0 || betaDiff > 0)) {
       this.updateElementPosition();
       this.element.style.willChange = 'transform';
@@ -350,7 +354,8 @@ export default class EnhancedTilt {
       glare: false,
       'max-glare': 1,
       'glare-prerender': false,
-      reset: true
+      reset: true,
+      scroll: true
     };
 
     let newSettings = {};
