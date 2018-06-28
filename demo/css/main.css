@@ -1,0 +1,130 @@
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #888; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(212, 212, 212); 
+  border-radius: 3px
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.fullViewport {
+  height: 100vh;
+  width: 100%;
+}
+
+.flex {
+  display: flex
+}
+
+.boxIntroLandscape {
+  width: 60vh;
+  height: 60vh;
+}
+
+.boxIntroPortrait {
+  width: 80vw;
+  height: 80vw;
+}
+
+.shadow {
+  box-shadow: -4px 10px 138px -30px rgba(0, 0, 0, 0.75);
+}
+
+.gradientOne {
+  background: linear-gradient(135deg, #600aff, #c1daff);
+}
+
+.gradientTwo {
+  background: linear-gradient(135deg, #FF7E6B, #8884FF);
+}
+
+.gradientThree {
+  background: linear-gradient(135deg, #FFC6D2, #A9AFF2);
+}
+
+.boxText {
+  font-size: 2em;
+  text-align: center;
+  text-decoration: none
+}
+
+.flexCenter {
+  align-items: center;
+  justify-content: center;
+}
+
+.col {
+  flex-direction: column
+}
+
+.white {
+  color: white;
+}
+
+.smallText {
+  font-size: .7em !important
+}
+
+.transform3d {
+  transform-style: preserve-3d;
+}
+
+.separation1 {
+  transform: translateZ(100px);
+}
+
+.blackBackground {
+  background-color: black
+}
+
+.overflowYHidden {
+  overflow-y: hidden
+}
+
+.textContainer {
+  width: 1000px;
+  height: 100%;
+}
+
+@media screen and (max-width: 1200px) {
+  .textContainer {
+    width: calc(100vw - 100px);
+  }
+}
+
+.title {
+  font-size: 4em;
+  font-weight: 600;
+  padding: 0;
+}
+
+.unstyledList {
+  list-style: none;
+  padding: 0;
+}
+
+.unstyledList li {
+  padding: 0;
+  margin: 20px 0;
+  font-size: 1.2em;
+  font-weight: 300;
+  text-align: center
+}
+
+.translucid{
+  opacity: .8
+}

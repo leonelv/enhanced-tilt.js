@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>enhanced-tilt.js demo</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container overflowYHidden">
+    <div class="intro blackBackground fullViewport flex flexCenter">
+      <a id="introBox" class="flex box1 gradientOne shadow boxText flexCenter col white transform3d" href="https://github.com/leonelv/enhanced-tilt.js" data-tilt >
+        <span class="smallText separation1">enhanced-tilt.js</span>
+      </a>
+    </div>
+    <div class="about flex flexCenter fullViewport gradientTwo white">
+      <div class="textContainer flex flexCenter col  translucid">
+       <p class="title transform3d"  data-tilt data-tilt-max-glare="1" data-tilt data-tilt-scale="1.1" data-tilt-easing="ease-out">
+         FEATURES
+       </p>
+        <ul class="unstyledList transform3d"  data-tilt data-tilt-max-glare="1" data-tilt data-tilt-scale="1.1" data-tilt-easing="ease-out" data-tilt-scroll>
+          <li>Smooth and Lightweight.</li>
+          <li>Zero dependencies.</li>
+          <li>Easy to use.</li>
+          <li>Supports TouchEvents.</li>
+          <li>Supports DeviceMotionEvents.</li>
+          <li>100% Compatible with mobile devices.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="introduction flex flexCenter fullViewport blackBackground white">
+        <div class="textContainer flex flexCenter col">
+            <p class="title">
+              HOW TO USE
+            </p>
+            <p>
+              HTML WAY:
+            </p>
+           </div>
+    </div>
+  </div>
+  <script src="js/mobile-chrome-vh-fix.js"></script>
+  <script src="js/enhanced-tilt.babel.min.js"></script>
+  <script>
+    detectOrientation()
+    window.addEventListener('resize', detectOrientation)
+
+    function detectOrientation() {
+      let portrait = innerHeight > innerWidth;
+
+      if (portrait) {
+        document.getElementById('introBox').classList.remove('boxIntroLandscape')
+        document.getElementById('introBox').classList.add('boxIntroPortrait')
+      } else if (!portrait) {
+        document.getElementById('introBox').classList.remove('boxIntroPortrait')
+        document.getElementById('introBox').classList.add('boxIntroLandscape')
+      }
+    }
+  </script>
+  <script>
+    let vhFix = new VHChromeFix(options)
+    var options = [{
+      selector: '.fullViewport',
+      vh: 100,
+    }];
+  </script>
+</body>
+
+</html>
